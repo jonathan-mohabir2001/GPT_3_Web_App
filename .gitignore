@@ -1,0 +1,5 @@
+client/node_modules 
+server/node_modules
+server/private
+server/private/apiKey.js
+GPT_WEB_APP_DOCUMENTATION.docx
