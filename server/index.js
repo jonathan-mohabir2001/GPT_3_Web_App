@@ -1,4 +1,5 @@
 //Entry Point for the server side of the application - routes imported from external file
+require('dotenv').config();
 
 const express = require('express');
 const app = express();
