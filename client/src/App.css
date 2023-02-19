@@ -27,6 +27,26 @@
 .App-link {
   color: #61dafb;
 }
+.home-footer {
+  color: black;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: C5C7C5; /* Add background color as per your design */
+  padding: 10px; /* Add padding as per your design */
+}
+
+.home-main-screen {
+  background-color: #495063;
+  color: white;
+  min-height: calc(100vh - 100px);
+}
+
+.home-footer {
+  background-color: #f2f2f2; /* Set the background color of the footer */
+  padding: 5px; /* Add padding to the top and bottom of the footer */
+}
 
 @keyframes App-logo-spin {
   from {
