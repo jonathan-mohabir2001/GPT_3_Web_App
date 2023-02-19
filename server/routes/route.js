@@ -1,35 +1,41 @@
 const express = require('express');
 const router = express.Router();
+
+//OPEN AI CONFIGURATION
 const keySetUp = require('../private/key');
 const openAiKey = keySetUp.myKey;
 const { Configuration, OpenAIApi } = require('openai');
-
 const configuration = new Configuration({
   apiKey: openAiKey,
 });
-
 const openAi = new OpenAIApi(configuration);
+//END OF OPEN AI CONFIGURATION
 
 router.post('/completion', async (req, res) => {
-  const prompt = req.body.prompt;
-  const bestOf = req.body.bestOf;
-  const frequencyPenalty = req.body.frequencyPenalty;
-  const maxTokens = req.body.maxTokens;
-  const presencePenalty = req.body.presencePenalty;
-  const topP = req.body.topP;
+  const { prompt } = req.body;
+  console.log(`Incoming prompt: ${prompt}`);
 
-  const openAiResponse = await openAi.createCompletion({
-    model: 'davinci',
+  const gptResponse = await openAi.createCompletion({
+    model: 'text-davinci-003',
     prompt: prompt,
-    temperature: 0.9,
-    maxTokens: maxTokens,
-    topP: topP,
-    presencePenalty: presencePenalty,
-    frequencyPenalty: frequencyPenalty,
-    bestOf: bestOf,
+    temperature: 0.7,
+    max_tokens: 150,
+    top_p: 1,
+    frequency_penalty: 1,
+    presence_penalty: 1,
   });
 
-  res.send(openAiResponse.data);
+  const responseText = gptResponse.data.choices[0].text.trim();
+  console.log(`Response: ${responseText}`);
+
+  // Replace newline characters with HTML line breaks
+  const responseHtml = responseText.replace(/\n/g, '<br>');
+
+  // Concatenate the message with the modified text
+  const message = 'Processing... <br>';
+  const response = `${message}<br>${responseHtml}`;
+
+  res.send(response);
 });
 
 router.get('/', (req, res) => {
