@@ -1,6 +1,7 @@
 client/node_modules 
 server/node_modules
-configs 
-configs/myKey.js
-configs/myKey
+
+private/key.js
+private
+
 GPT_WEB_APP_DOCUMENTATION.docx
