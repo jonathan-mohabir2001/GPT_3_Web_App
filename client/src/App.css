@@ -48,7 +48,6 @@
   padding: 1px; /* Add padding to the top and bottom of the footer */
 }
 
-
 .unorderd-list {
   list-style-type: none;
   margin: 0;
@@ -56,12 +55,21 @@
   overflow: hidden;
 }
 
-.main-form-screen{
+.main-form-screen {
   background-color: #495063;
   color: white;
   min-height: calc(100vh - 100px);
 }
 
+#main-form-section {
+  background-color: #495063;
+  color: white;
+  min-height: calc(100vh - 100px);
+}
+
+#response-text-id {
+  color: #495063;
+}
 
 @keyframes App-logo-spin {
   from {

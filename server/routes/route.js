@@ -18,11 +18,11 @@ router.post('/completion', async (req, res) => {
   const gptResponse = await openAi.createCompletion({
     model: 'text-davinci-003',
     prompt: prompt,
-    temperature: 0.8,
-    max_tokens: 300,
-    top_p: 1,
-    frequency_penalty: 1.2,
-    presence_penalty: 1,
+    temperature: 0.9,
+    max_tokens: 900,
+    top_p: 0.9,
+    frequency_penalty: 1.5,
+    presence_penalty: 1.5,
   });
 
   const responseText = gptResponse.data.choices[0].text.trim();
@@ -33,7 +33,7 @@ router.post('/completion', async (req, res) => {
 
   // Concatenate the message with the modified text
 
-  const response = `${message}<br>${responseHtml}`;
+  const response = `${responseHtml}`;
 
   res.send(response);
 });
