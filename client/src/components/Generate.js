@@ -40,22 +40,21 @@ function Generate() {
         </div>
 
         <div className="col-md-6">
-  {loading ? (
-    <div className="spinner-border" role="status">
-      <span className="sr-only">Generating response</span>
-    </div>
-  ) : (
-    <div className="response-container">
-      {response.split('\n').map((line, index) => (
-        <div key={index}>
-          {line}
-          <br />
+          {loading ? (
+            <div className="spinner-border" role="status">
+              <span className="sr-only">Generating response</span>
+            </div>
+          ) : (
+            <div className="response-container">
+              {response.split('\n').map((line, index) => (
+                <div key={index}>
+                  {line}
+                  <br />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-      ))}
-    </div>
-  )}
-</div>
-
 
         <footer className="home-footer fixed-bottom bg-light py-3">
           <p className="text-center mb-0">Developed By Jonathan Mohabir</p>
