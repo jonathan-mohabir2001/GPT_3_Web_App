@@ -18,8 +18,8 @@ router.post('/completion', async (req, res) => {
   const gptResponse = await openAi.createCompletion({
     model: 'text-davinci-003',
     prompt: prompt,
-    temperature: 0.9,
-    max_tokens: 900,
+    temperature: 0.7,
+    max_tokens: 700,
     top_p: 0.9,
     frequency_penalty: 1.5,
     presence_penalty: 1.5,
@@ -29,13 +29,14 @@ router.post('/completion', async (req, res) => {
   console.log(`Response: ${responseText}`);
 
   // Replace newline characters with HTML line breaks
-  const responseHtml = responseText.replace(/\n/g, '<br>');
+  const responseHtml = responseText;
+
 
   // Concatenate the message with the modified text
 
   const response = `${responseHtml}`;
 
-  res.send(response);
+  res.send(response.trim());
 });
 
 router.get('/', (req, res) => {

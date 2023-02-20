@@ -16,7 +16,7 @@ function Generate() {
     setLoading(false);
   };
 
-  const lines = response.split('\n');
+
 
   return (
     <div className="container" id="main-form-section">
@@ -45,36 +45,16 @@ function Generate() {
               <span className="sr-only">Generating response</span>
             </div>
           ) : (
-            <div className="response-container">
-              {response.split('\n').map((line, index) => (
-                <div key={index}>
-                  {line}
-                  <br />
-                </div>
-              ))}
-            </div>
+            <div className="response-container">{response}</div>
           )}
         </div>
 
         <footer className="home-footer fixed-bottom bg-light py-3">
           <p className="text-center mb-0">Developed By Jonathan Mohabir</p>
           <p className="text-center mb-0">API source: OpenAi</p>
+          <p className="text-center mb-0">Model: DaVinci</p>
         </footer>
       </div>
-
-      <style jsx>{`
-        .response-container {
-          background-color: #f5f5f5;
-          padding: 10px;
-          border-radius: 5px;
-        }
-
-        .response-container p {
-          margin: 0 0 10px;
-          font-size: 16px;
-          line-height: 1.5;
-        }
-      `}</style>
     </div>
   );
 }
