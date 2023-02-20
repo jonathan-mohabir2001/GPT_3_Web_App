@@ -3,5 +3,7 @@ server/node_modules
 
 private/key.js
 private
+server/database_configs/database.js
+
 
 GPT_WEB_APP_DOCUMENTATION.docx

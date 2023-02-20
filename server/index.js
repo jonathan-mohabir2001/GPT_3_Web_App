@@ -32,6 +32,30 @@ app.use(
 //Router Middleware
 app.use('/', router);
 //End of Router Middleware
+
+//DATABASE CONNECTION
+
+const connectionString = require('./database_configs/database');
+mongoose.connect(connectionString.connectionString, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+});
+
+let dbConnection = mongoose.connection;
+
+dbConnection.once('opening connection', () => {
+  console.log(
+    `Successfully connected to database: ${connectionString.connectionString}`
+  );
+});
+
+dbConnection.on('error', (err) => {
+  console.log(`Error connecting to database: ${err}`);
+});
+
+//END OF DATABASE CONNECTION
+
 app.listen(PORT, () => {
   console.log(
     `Express Backend Up and Running on Port: ${PORT}, press Ctrl+C to terminate.`
