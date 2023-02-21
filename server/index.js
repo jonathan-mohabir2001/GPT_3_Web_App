@@ -39,7 +39,6 @@ const connectionString = require('./database_configs/database');
 mongoose.connect(connectionString.connectionString, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useCreateIndex: true,
 });
 
 let dbConnection = mongoose.connection;
