@@ -3,6 +3,13 @@ const router = express.Router();
 const Prompt = require('../database_configs/prompt');
 const Response = require('../database_configs/responses');
 
+// Security Packages for User Authentication and Authorization (JWT)
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
+// objects of the user schema from the database to run mongoose queries
+const User = require('../database_configs/user');
+
 // OPEN AI CONFIGURATION
 const keySetUp = require('../private/key');
 const openAiKey = keySetUp.myKey;
@@ -38,7 +45,7 @@ router.post('/completion', async (req, res) => {
     temperature: 0.5,
     //temperature is the randomness of the model, the higher the temperature the more random the model will be
 
-    max_tokens: 750,
+    max_tokens: 1000,
     //max_tokens is the maximum number of tokens that the model will generate
 
     top_p: 0.9,
@@ -68,7 +75,6 @@ router.post('/completion', async (req, res) => {
   });
   await newResponseObj.save();
 
-  // Concatenate the message with the modified text
   const response = `${responseHtml}`;
 
   res.send(response.trim());
@@ -76,6 +82,32 @@ router.post('/completion', async (req, res) => {
 
 router.get('/', (req, res) => {
   res.send('Welcome to the backend of the application');
+});
+// new routes for user sign up and login below
+router.post('/signup', async (req, res) => {
+  const { name, email, password } = req.body;
+
+  // Hash the password
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  // Create a new user object
+  const newUser = new User({
+    name: name,
+    email: email,
+    password: hashedPassword,
+  });
+
+  try {
+    // Save the new user to the database
+    await newUser.save();
+    res.status(201).json({ message: 'User created successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+
+  // log when the new user is created
+  console.log(`New user created @ ${Date.now()}: ${newUser}`);
 });
 
 module.exports = router;
