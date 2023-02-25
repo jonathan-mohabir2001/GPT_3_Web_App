@@ -55,8 +55,17 @@ dbConnection.on('error', (err) => {
 
 //END OF DATABASE CONNECTION
 
+//Viewing Database material
+
+const UserModel = require('./database_configs/user');
+
 app.listen(PORT, () => {
   console.log(
     `Express Backend Up and Running on Port: ${PORT}, press Ctrl+C to terminate.`
   );
+});
+
+UserModel.find({}, { email: 1 }, function (error, users) {
+  if (error) return console.log(error);
+  console.log(users);
 });

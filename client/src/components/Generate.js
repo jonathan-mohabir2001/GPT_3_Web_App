@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addPrompt, addResponse } from '../store/reducers/chat';
 import { Spinner } from 'react-bootstrap';
@@ -9,6 +9,25 @@ function Generate() {
   const [loading, setLoading] = useState(false);
   const prompts = useSelector((state) => state.chat.prompts);
   const responses = useSelector((state) => state.chat.responses);
+
+  const [email, setEmail] = useState('');
+
+  const emailValidation = useEffect(() => {
+    const getEmail = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/user');
+        const users = response.data;
+        if (users.length > 0) {
+          setEmail(users[0].email);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getEmail();
+  }, []);
+
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
@@ -28,9 +47,12 @@ function Generate() {
       <div className="row">
         <div className="col-md-6">
           <h2 className="mb-4">Generate Some Responses</h2>
+          <p className="mb-4">Logged in as: </p>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="promptTextArea" className="sr-only">Enter your prompt</label>
+              <label htmlFor="promptTextArea" className="sr-only">
+                Enter your prompt
+              </label>
               <textarea
                 className="form-control mb-3"
                 id="promptTextArea"
@@ -44,12 +66,16 @@ function Generate() {
                 className="btn btn-primary btn-lg btn-block"
                 disabled={!input || loading}
               >
-                {loading ?
-                  <Spinner animation="border" size="sm" role="status" className="mr-2">
+                {loading ? (
+                  <Spinner
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    className="mr-2"
+                  >
                     <span className="sr-only">Generating response</span>
                   </Spinner>
-                  : null
-                }
+                ) : null}
                 Generate
               </button>
             </div>
@@ -78,21 +104,15 @@ function Generate() {
             {responses.slice(0, 5).map((response, index) => (
               <div className="card mb-3" key={index}>
                 <div className="card-body p-3">
-                  <p className="mb-0">{response}</p>
+                  <p className="mb-0">{response || 'No response yet.'}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
       </div>
-
-      <footer className="home-footer fixed-bottom bg-light py-3 mt-5">
-        <p className="text-center mb-0">Developed By Jonathan Mohabir</p>
-        <p className="text-center mb-0">API source: OpenAi</p>
-        <p className="text-center mb-0">Model: DaVinci</p>
-      </footer>
     </div>
   );
 }
 
-export default Generate
+export default Generate;

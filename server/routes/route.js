@@ -8,12 +8,13 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 // objects of the user schema from the database to run mongoose queries
-const User = require('../database_configs/user');
+const UserModel = require('../database_configs/user');
 
 // OPEN AI CONFIGURATION
 const keySetUp = require('../private/key');
 const openAiKey = keySetUp.myKey;
 const { Configuration, OpenAIApi } = require('openai');
+const user = require('../database_configs/user');
 const configuration = new Configuration({
   apiKey: openAiKey,
 });
@@ -91,7 +92,7 @@ router.post('/signup', async (req, res) => {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   // Create a new user object
-  const newUser = new User({
+  const newUser = new UserModel({
     name: name,
     email: email,
     password: hashedPassword,
@@ -108,6 +109,16 @@ router.post('/signup', async (req, res) => {
 
   // log when the new user is created
   console.log(`New user created @ ${Date.now()}: ${newUser}`);
+});
+
+// Asynchronous api endpoint for the emailValidation function from front end to check for existing email
+router.get('/users', async (req, res) => {
+ 
+  const allUsers = await UserModel.find({}).lean();
+  // assign await query to allUsers varible, used lean method because this was a mongoose query object
+ 
+  // await and execute the query to get an array of JavaScript objects
+  res.send(allUsers);
 });
 
 module.exports = router;
